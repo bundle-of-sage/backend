@@ -33,4 +33,8 @@ async function logout(req, res, next) {
     });
 }
 
-module.exports = { checkAuthStatus, login, logout, signUp };
+function test(req, res, next) {
+  res.status(200).json({ message: "Connected successfully!" });
+}
+
+module.exports = { checkAuthStatus, login, logout, signUp, test };
