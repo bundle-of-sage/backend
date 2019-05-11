@@ -1,0 +1,14 @@
+{
+  "name": "sage-backend",
+  "version": "1.0.0",
+  "author": "Ryan Brockhoff <brockhoffrw@gmail.com>",
+  "description": "Backend for Bundle of Sage",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon server/index.js",
+    "start-production": "NODE_ENV=production nodemon server/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "license": "ISC"
+}
