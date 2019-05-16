@@ -7,7 +7,7 @@ const { verifyToken } = require("./customMiddleware");
 
 function mainConfig(app) {
   app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL }));
-  console.log("frontend: ", process.env.FRONTEND_URL);
+
   app.use(cookieParser());
 
   app.use(json());
