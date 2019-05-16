@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const logger = require("./logger");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const { verifyToken } = require("./customMiddleware");
+const { verifyToken, attachUserToRequest } = require("./customMiddleware");
 
 function mainConfig(app) {
   app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL }));
@@ -17,6 +17,8 @@ function mainConfig(app) {
   if (process.env.NODE_ENV !== "test") {
     app.use(morgan("dev", { stream: logger.stream }));
   }
+
+  app.use(attachUserToRequest);
 
   app.use(verifyToken);
 }

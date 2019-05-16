@@ -10,12 +10,12 @@ async function login(req, res, next) {
   try {
     //Has Existing Account?
     const { userInfo } = req.body;
-    const hasAccount = await checkIfUserHasAccount(userInfo.uid);
+    const user = await checkIfUserHasAccount(userInfo.uid);
     //Previous User
-    if (hasAccount) {
+    if (user) {
       const token = jwt.sign({ userId: userInfo.uid }, process.env.APP_SECRET);
       res.cookie("token", token, cookieOptions);
-      res.status(200).json({ message: "Logged in" });
+      res.status(200).json({ user });
     }
     //New User
     else {
@@ -40,7 +40,7 @@ async function checkIfUserHasAccount(user_id) {
   const userResponse = await knex("users")
     .where({ user_id })
     .first();
-  if (userResponse) return true;
+  if (userResponse) return userResponse;
   else return false;
 }
 
