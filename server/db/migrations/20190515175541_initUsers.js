@@ -1,9 +1,9 @@
 exports.up = async function(knex, Promise) {
   await knex.schema.createTable("users", table => {
     table
-      .increments("user_id")
-      .unsigned()
-      .primary();
+      .string("user_id")
+      .unique()
+      .notNullable();
     table
       .string("email")
       .unique()
