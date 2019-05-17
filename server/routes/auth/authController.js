@@ -2,8 +2,13 @@ const jwt = require("jsonwebtoken");
 const knex = require("../../db/connection");
 const cookieOptions = { httpOnly: true, maxAge: 1000 * 3600 * 24 * 180 };
 
-function checkAuthStatus(req, res, next) {
-  res.status(200).json({ authorized: req.userId !== undefined });
+async function checkAuthStatus(req, res, next) {
+  const activeMembership = req.userId
+    ? await getMembershipStatus(req.userId)
+    : false;
+  res
+    .status(200)
+    .json({ authorized: req.userId !== undefined, activeMembership });
 }
 
 async function login(req, res, next) {
@@ -41,6 +46,15 @@ async function checkIfUserHasAccount(user_id) {
     .where({ user_id })
     .first();
   if (userResponse) return userResponse;
+  else return false;
+}
+
+async function getMembershipStatus(user_id) {
+  const response = await knex("users")
+    .select("membership_paid")
+    .where({ user_id })
+    .first();
+  if (response.membership_paid) return true;
   else return false;
 }
 
