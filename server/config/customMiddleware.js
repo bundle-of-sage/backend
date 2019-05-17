@@ -13,9 +13,10 @@ function verifyToken(req, res, next) {
 async function attachUserToRequest(req, res, next) {
   // Skip if no user attached to request
   if (!req.userId) return next();
+
   try {
     const user = await knex("users")
-      .where({ user_id: req.user_id })
+      .where({ user_id: req.userId })
       .first();
     req.user = user;
     next();

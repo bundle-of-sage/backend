@@ -5,7 +5,7 @@
   "description": "Backend for Bundle of Sage",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "start-dev": "nodemon server/index.js",
     "test": "jest"
   },

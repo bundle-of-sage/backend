@@ -18,9 +18,9 @@ function mainConfig(app) {
     app.use(morgan("dev", { stream: logger.stream }));
   }
 
-  app.use(attachUserToRequest);
-
   app.use(verifyToken);
+
+  app.use(attachUserToRequest);
 }
 
 module.exports = mainConfig;
