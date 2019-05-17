@@ -1,5 +1,5 @@
 const knex = require("../../db/connection");
-const stripe = require("stripe")("sk_test_XbuogqTf36m4yQY0rUEqUWUK00JE4WBDLk");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function getUserProfile(req, res, next) {
   try {
