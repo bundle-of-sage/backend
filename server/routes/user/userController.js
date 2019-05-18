@@ -12,17 +12,23 @@ async function getUserProfile(req, res, next) {
 async function chargePayment(req, res, next) {
   try {
     const { token } = req.body.token;
-    let { status } = await stripe.charges.create({
+    const { status } = await stripe.charges.create({
       amount: 5000,
       currency: "usd",
       description: "Membership Access to Bundle of Sage",
       source: token
     });
-    console.log("Stripe Payment Status: ", status);
-    //Handle 200, 500
-    res.status(200).json({ status });
+    if (status === "succeeded") {
+      await knex("users")
+        .update({ membership_paid: true })
+        .where({ user_id: req.userId });
+      return res.status(200).json({ message: "Payment successful" });
+    } else res.sendStatus(402);
   } catch (error) {
-    console.log("Stripe Error: ", error);
+    const errorMessage =
+      error.message ||
+      "We are having trouble processing your payment. Please try again later.";
+    res.status(402).send({ errorMessage });
     next(error);
   }
 }
