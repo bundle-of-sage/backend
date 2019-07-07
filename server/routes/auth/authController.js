@@ -25,6 +25,8 @@ async function login(req, res, next) {
     //New User
     else {
       const user = await createNewUser(userInfo);
+      const token = jwt.sign({ userId: userInfo.uid }, process.env.APP_SECRET);
+      res.cookie("token", token, cookieOptions);
       res.status(200).json({ user });
     }
   } catch (error) {
@@ -59,10 +61,10 @@ async function getMembershipStatus(user_id) {
 }
 
 async function createNewUser(userInfo) {
-  const { uid, displayName, email, photoURL } = userInfo;
-  const splitDisplayName = displayName.split(" ");
-  const first_name = splitDisplayName[0] || "User";
-  const last_name = splitDisplayName[1] || "";
+  const { uid, displayName = "", email, photoURL = null } = userInfo;
+  const splitDisplayName = displayName ? displayName.split(" ") : "";
+  const first_name = splitDisplayName[0] || null;
+  const last_name = splitDisplayName[1] || null;
 
   const [user] = await knex("users")
     .insert({
